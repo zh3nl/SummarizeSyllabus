@@ -1,2 +1,7 @@
-# SummarizeSyllabus
-Team Members: Zhen Liu
+# **Syllabus Scanner**
+- Team Members: Zhen Liu, Lucas Chin, Kabilan Vaikunthan, Sophia Ray
+
+
+
+
+

@@ -1,7 +1,11 @@
 import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Replace with your actual Claude API key
-API_KEY = "your_claude_api_key_here"
+API_KEY = os.getenv('API_KEY') 
 API_URL = "https://api.anthropic.com/v1/complete"
 
 def get_claude_response(prompt):

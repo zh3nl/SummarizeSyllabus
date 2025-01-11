@@ -1,11 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
+import FileUploader from './components/FileUploader';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello World</h1>
-    </div>
+    <FileUploader />
   );
 }
 

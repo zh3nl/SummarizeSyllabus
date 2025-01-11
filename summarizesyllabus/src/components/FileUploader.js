@@ -61,7 +61,7 @@ function FileUploader() {
                 <h1 className="text-2xl font-semibold text-gray-800">Upload Your Syllabus Below</h1>
                 <div
                     className={`w-full max-w-md p-6 border-2 border-dashed rounded-lg cursor-pointer
-                        ${isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300'}
+                        ${isDragging ? 'border-blue-500 bg-blue-50' : 'bg-gray-100 border-gray-300'}
                         ${file ? 'bg-green-50' : 'bg-gray-50'}
                         transition-all duration-200 ease-in-out`}
                     onDragOver={handleDragOver}
@@ -78,12 +78,12 @@ function FileUploader() {
                     <div className="text-center">
                         {file ? (
                             <>
-                                <p className="text-sm text-gray-600">Selected file:</p>
+                                <p className="text-sm text-gray-700">Selected file:</p>
                                 <p className="font-medium">{file.name}</p>
                             </>
                         ) : (
                             <>
-                                <p className="text-lg font-medium text-gray-700">
+                                <p className="text-lg font-medium text-gray-600">
                                     Drop your file here or click to browse
                                 </p>
                                 <p className="mt-2 text-sm text-gray-500">

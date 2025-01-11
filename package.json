@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "tailwindcss": "^3.4.17",
     "web-vitals": "^4.2.4"
   }
 }

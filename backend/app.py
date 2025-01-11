@@ -1,8 +1,25 @@
+# Import Flask server dependencies
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
 
+# Importing necessary packages for Aryn DocParse and Claude
+import anthropic
+from aryn_sdk.partition import partition_file
+import json
+from pydantic import BaseModel
+
+# Importing functions for summarization
+ 
+
+# Importing API keys from environment variable
+from dotenv import load_dotenv
+load_dotenv()
+aryn_api_key = os.getenv('aryn_API_KEY')
+openai_api_key = os.getenv('anthropic_API_KEY')
+
+# Initializing Flask server
 app = Flask(__name__)
 CORS(app)
 
@@ -10,7 +27,6 @@ CORS(app)
 UPLOAD_FOLDER = 'backend/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 
 # Route to render the upload form
 @app.route('/upload', methods=['POST'])
@@ -28,6 +44,9 @@ def save_file():
     else:
         return jsonify({'error': 'No file provided'}), 400
 
+
+# @app.route('/what', methods=['GET'])
+# def summarize():
 
 
 if __name__ == '__main__':

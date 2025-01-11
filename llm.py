@@ -12,7 +12,7 @@ def get_claude_response(prompt):
 
     data = {
         "prompt": f"\n\nHuman: {prompt}\n\nAssistant:",
-        "model": "claude-2",  # Specify the Claude model version
+        "model": "claude-3.5-sonnet",  # Specify the Claude model version
         "max_tokens_to_sample": 300,  # Limit the number of tokens in the response
         "temperature": 0.7  # Control randomness (0.0 = deterministic, 1.0 = more random)
     }

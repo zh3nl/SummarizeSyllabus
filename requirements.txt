@@ -2,4 +2,7 @@ requests
 python-dotenv
 pdf2image==1.17.0
 aryn-sdk
+openai
+pydantic
+
 anthropic

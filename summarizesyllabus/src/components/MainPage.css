@@ -4,15 +4,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.header {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 24px;
-    font-weight: bold;
-    
-}
-
 .main-container {
     display: flex;
     flex-direction: column;
@@ -24,9 +15,21 @@ body {
 }
 
 .main-intro {
+
+    display: flex;
+    text-align: center;
     font-size: 56px;
     font-weight: bold;
     margin-bottom: 20px;
+    margin-left: 85px;
+}
+
+#succeed{
+    padding-left: 16px;
+    background: linear-gradient(90deg, #00e100, #32cd32, #30bf30);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+   
 }
 
 .main-instructions {

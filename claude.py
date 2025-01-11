@@ -6,7 +6,7 @@ load_dotenv()
 
 client = anthropic.Anthropic(
     # defaults to os.environ.get("ANTHROPIC_API_KEY")
-    api_key=os.getenv('API_KEY'),
+    anthropic_api_key=os.getenv('anthropic_API_KEY'),
 )
 message = client.messages.create(
     model="claude-3-5-sonnet-20241022",

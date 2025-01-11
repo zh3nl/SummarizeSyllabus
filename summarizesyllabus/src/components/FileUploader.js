@@ -3,15 +3,17 @@ import uniLogos from "../assets/Uni logos.png";
 import newUniLogos from "../assets/Uni logos (1).png";
 
 function FileUploader() {
-  const [file, setFile] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
+    const [file, setFile] = useState(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const[message, setMessage] = useState("");
 
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-    }
-  };
+    const handleFileChange = async (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+            await uploadFile(selectedFile);
+        }
+    };
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -22,15 +24,38 @@ function FileUploader() {
     setIsDragging(false);
   };
 
-  const handleDrop = (event) => {
-    event.preventDefault();
-    setIsDragging(false);
+    const handleDrop = async (event) => {
+        event.preventDefault();
+        setIsDragging(false);
+        
+        const droppedFile = event.dataTransfer.files[0];
+        if (droppedFile) {
+            setFile(droppedFile);
+            await uploadFile(droppedFile);
+        }
+    };
 
-    const droppedFile = event.dataTransfer.files[0];
-    if (droppedFile) {
-      setFile(droppedFile);
+    const uploadFile = async (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try{        
+            const response = await fetch("http://localhost:8000/upload", {
+                method: "POST",
+                body: formData,
+            });
+            if (response.ok){
+                const res = await response.json();
+                setMessage(`File uploaded successfully, path = ${res.filePath}`)
+            }
+            else{
+                setMessage("Failed to upload file")
+            }
+        } catch (error){
+            console.error("error uploading file: ", error);
+            setMessage("error uploading file")
+        }
     }
-  };
 
   return (
     <>

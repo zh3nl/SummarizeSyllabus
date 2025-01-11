@@ -4,9 +4,8 @@ import './MainPage.css';
 function MainPage(){
     return (
         <div>
-            <div className="header">Summarize Syllabus</div>
             <section className='main-container'>
-                <div className='main-intro'>Scan. Simplify. Succeed.</div>
+                <div className='main-intro'>Scan. Simplify. <span id='succeed'>Succeed.</span></div>
             </section>
         </div>
     )

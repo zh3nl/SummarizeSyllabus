@@ -1,2 +1,2 @@
 # SummarizeSyllabus
-SB Hacks XI Submission
+Team Members: Zhen Liu

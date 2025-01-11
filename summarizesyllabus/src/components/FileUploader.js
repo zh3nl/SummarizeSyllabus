@@ -31,7 +31,7 @@ function FileUploader() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
+        <div className="flex items-center justify-center">
             <div className="flex flex-col items-center space-y-6">
                 <h1 className="text-2xl font-semibold text-gray-800">Upload Your Syllabus Below</h1>
                 <div

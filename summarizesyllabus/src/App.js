@@ -1,9 +1,13 @@
 import './App.css';
 import FileUploader from './components/FileUploader';
+import MainPage from './components/MainPage';
 
 function App() {
   return (
-    <FileUploader />
+    <div>
+      <MainPage />
+      <FileUploader />
+    </div>
   );
 }
 

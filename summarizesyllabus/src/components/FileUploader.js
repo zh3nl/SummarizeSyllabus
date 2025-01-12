@@ -5,6 +5,7 @@ function FileUploader() {
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
     const handleFileChange = async (event) => {
         const selectedFile = event.target.files[0];
@@ -40,13 +41,14 @@ function FileUploader() {
         formData.append("file", file);
 
         try{        
+            setLoading(true);
             const response = await fetch("http://localhost:8000/upload", {
                 method: "POST",
                 body: formData,
             });
             if (response.ok){
                 const res = await response.json();
-                setMessage(`File uploaded successfully, path = ${res.filePath}`)
+                setMessage(`File uploaded successfully`)
                 setFile(null);
             }
             else{
@@ -55,6 +57,8 @@ function FileUploader() {
         } catch (error){
             console.error("error uploading file: ", error);
             setMessage("error uploading file")
+        } finally{
+            setLoading(false);
         }
     }
 
@@ -108,6 +112,11 @@ function FileUploader() {
             className="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition duration-200">
             Upload File
             </button>
+            {loading && (
+              <p className="mt-4 text-sm font-medium text-blue-600">
+                Uploading file...
+              </p>
+            )}
             {message && (
                         <p
                             className={`mt-4 text-sm font-medium ${

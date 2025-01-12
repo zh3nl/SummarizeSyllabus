@@ -4,5 +4,8 @@ pdf2image==1.17.0
 aryn-sdk
 openai
 pydantic
-
 anthropic
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client

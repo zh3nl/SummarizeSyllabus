@@ -51,23 +51,16 @@ def summarize(file_name, aryn_api_key, anthropic_api_key):
 
     client = anthropic.Anthropic(api_key=anthropic_api_key)
     message = client.messages.create(
-        model="claude-3-5-sonnet-20241022",
-        max_tokens=1024,
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    # {
-                    #     "type": "text",
-                    #     "source": {
-                    #         "type": "text",
-                    #         "media_type": "text",
-                    #         "data": f"{formatted_content}",
-                    #     },
-                    # },
-                    {
-                        "type": "text",
-                        "text": "The following is a PDF syllabus document. Please extract specific key dates and times of relevant events like lectures, midterms, and project deadlines from the document. "
+    model="claude-3-5-sonnet-20241022",
+    max_tokens=8192,
+    temperature=0,
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "The following is a PDF syllabus document. Please extract specific key dates and times of relevant events like lectures, midterms, and project deadlines from the document. "
     "Use the provided template to create a calendar event for each relevant date.\n\n"
     "If an event does not have specific information for any field, set that field to `null`.\n\n"
     "Template:\n"
@@ -107,13 +100,14 @@ def summarize(file_name, aryn_api_key, anthropic_api_key):
     "5. If no attendees are listed, set the `attendees` field to an empty list.\n"
     "6. Set any missing fields to `null` if the information is unavailable.\n"
     "7. Use ISO 8601 format for date and time fields."
-    "Give no further text only the filled out events."                    }
-                ],
-            }
-        ],
-            tools=tools,
-            tool_choice={"type": "tool", "name": "build_description_result"}
+    "Give no further text only the filled out events."
+                }
+            ],
+        }
+    ],
+        tools=tools,
+        tool_choice={"type": "tool", "name": "build_description_result"}
 
-    )
+)
     out = json.dumps(message.content[0].input['steps'], indent=4)
     return out

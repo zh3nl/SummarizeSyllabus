@@ -4,6 +4,13 @@ from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
 
+# Importing necessary packages for Google OAuth
+from google_auth_oauthlib.flow import Flow
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
+CLIENT_SECRET_FILE = 'client_secret.json'
+SCOPES = ['https://www.googleapis.com/auth/calendar.events', 'https://www.googleapis.com/auth/drive.file']
+
 # Importing necessary packages for Aryn DocParse and Claude
 import anthropic
 from aryn_sdk.partition import partition_file
@@ -30,7 +37,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Route to render the upload form
 @app.route('/upload', methods=['POST'])
-def save_file():
+def upload():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
     
@@ -45,6 +52,8 @@ def save_file():
         return jsonify({'message': 'File uploaded successfully', 'filePath': file_path, 'summary':summary}), 200
     else:
         return jsonify({'error': 'No file provided'}), 400
+    
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)

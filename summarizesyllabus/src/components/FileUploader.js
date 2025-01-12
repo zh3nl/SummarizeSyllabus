@@ -121,7 +121,7 @@ function FileUploader() {
             </button>
             {loading && (
               <p className="mt-4 text-sm font-medium text-blue-600">
-                Uploading file...
+                Scanning file... May take a moment...
               </p>
             )}
             {message && (

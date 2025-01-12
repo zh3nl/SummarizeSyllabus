@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import newUniLogos from "../assets/Uni logos (1).png";
 import newUniLogos2 from "../assets/Uni logos (2).png";
 import "./FileUploader.css"
 import { useNavigate } from "react-router-dom";

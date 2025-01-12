@@ -1,5 +1,4 @@
 import { useState } from "react";
-import uniLogos from "../assets/Uni logos.png";
 import newUniLogos from "../assets/Uni logos (1).png";
 
 function FileUploader() {
@@ -11,7 +10,7 @@ function FileUploader() {
         const selectedFile = event.target.files[0];
         if (selectedFile) {
             setFile(selectedFile);
-            await uploadFile(selectedFile);
+            setMessage("");
         }
     };
 
@@ -31,11 +30,12 @@ function FileUploader() {
         const droppedFile = event.dataTransfer.files[0];
         if (droppedFile) {
             setFile(droppedFile);
-            await uploadFile(droppedFile);
+            setMessage("");
         }
     };
 
     const uploadFile = async (file) => {
+
         const formData = new FormData();
         formData.append("file", file);
 
@@ -47,6 +47,7 @@ function FileUploader() {
             if (response.ok){
                 const res = await response.json();
                 setMessage(`File uploaded successfully, path = ${res.filePath}`)
+                setFile(null);
             }
             else{
                 setMessage("Failed to upload file")
@@ -102,6 +103,22 @@ function FileUploader() {
               )}
             </div>
           </div>
+          <button 
+            onClick={() => uploadFile(file)} 
+            className="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition duration-200">
+            Upload File
+            </button>
+            {message && (
+                        <p
+                            className={`mt-4 text-sm font-medium ${
+                                message.includes("successfully")
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                            }`}
+                        >
+                            {message}
+                        </p>
+            )}
         </div>
       </div>
       <div className="flex flex-col items-center justify-center py-5">

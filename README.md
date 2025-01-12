@@ -45,6 +45,10 @@ Four years, ten classes a year: forty syllabi to memorize, schedule, and plan ar
 ### Calendar Assistant
 * Uses GoogleOAUTH Credentials to access user accounts
 * Formatted data pulled from syllabus documents are converted into event JSON formats
-* Important events such as exam dates and class schedules are then conveniently pushed onto user calendars
+* Important events such as exam dates and class schedules are then pushed and stored onto user calendars
+
+### Data Storage for Course Information
+* Used local storage and React Context to store analyzed course information
+* Allow users to review course information at their own convenience
 
 

@@ -24,7 +24,7 @@ python app.py
 ```
 The app should be at `localhost:3000`
 ## Project Inspiration
-* Four years, ten classes a year: forty syllabi to memorize, schedule, and plan around. Wish there was a way to automate your class calendar? We, as students, understand the pain of trying to remember which quiz you have coming up next week, or where you class is on week one and wanted to design a solution. Syllabus Scanner allows students to upload a class syllabus to then quickly and neatly return all you will need to ace your class. Summaries, prerequisites, office hours, and class schedule. Also included is our flagship feature, the ability to add your midterms, exams, and class periods to your google calendar instantly. By authorizing your gmail you will have your class period, location, start and end date, and summary instantly added to your google calendar. 
+Four years, ten classes a year: forty syllabi to memorize, schedule, and plan around. Wish there was a way to automate your class calendar? We, as students, understand the pain of trying to remember which quiz you have coming up next week, or where you class is on week one and wanted to design a solution. Syllabus Scanner allows students to upload a class syllabus to then quickly and neatly return all you will need to ace your class. Summaries, prerequisites, office hours, and class schedule. Also included is our flagship feature, the ability to add your midterms, exams, and class periods to your google calendar instantly. By authorizing your gmail you will have your class period, location, start and end date, and summary instantly added to your google calendar. 
 ## Tech Stack
 * Frontend: React, Tailwind CSS, JavaScript
 * Backend: Flask/Python

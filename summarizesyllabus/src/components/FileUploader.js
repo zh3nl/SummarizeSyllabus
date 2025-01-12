@@ -1,19 +1,18 @@
 import { useState } from "react";
-import uniLogos from "../assets/Uni logos.png";
 import newUniLogos from "../assets/Uni logos (1).png";
 
 function FileUploader() {
-    const [file, setFile] = useState(null);
-    const [isDragging, setIsDragging] = useState(false);
-    const[message, setMessage] = useState("");
+  const [file, setFile] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [message, setMessage] = useState("");
 
-    const handleFileChange = async (event) => {
-        const selectedFile = event.target.files[0];
-        if (selectedFile) {
-            setFile(selectedFile);
-            await uploadFile(selectedFile);
-        }
-    };
+  const handleFileChange = async (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      await uploadFile(selectedFile);
+    }
+  };
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -24,38 +23,37 @@ function FileUploader() {
     setIsDragging(false);
   };
 
-    const handleDrop = async (event) => {
-        event.preventDefault();
-        setIsDragging(false);
-        
-        const droppedFile = event.dataTransfer.files[0];
-        if (droppedFile) {
-            setFile(droppedFile);
-            await uploadFile(droppedFile);
-        }
-    };
+  const handleDrop = async (event) => {
+    event.preventDefault();
+    setIsDragging(false);
 
-    const uploadFile = async (file) => {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        try{        
-            const response = await fetch("http://localhost:8000/upload", {
-                method: "POST",
-                body: formData,
-            });
-            if (response.ok){
-                const res = await response.json();
-                setMessage(`File uploaded successfully, path = ${res.filePath}`)
-            }
-            else{
-                setMessage("Failed to upload file")
-            }
-        } catch (error){
-            console.error("error uploading file: ", error);
-            setMessage("error uploading file")
-        }
+    const droppedFile = event.dataTransfer.files[0];
+    if (droppedFile) {
+      setFile(droppedFile);
+      await uploadFile(droppedFile);
     }
+  };
+
+  const uploadFile = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("http://localhost:8000/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (response.ok) {
+        const res = await response.json();
+        setMessage(`File uploaded successfully, path = ${res.filePath}`);
+      } else {
+        setMessage("Failed to upload file");
+      }
+    } catch (error) {
+      console.error("error uploading file: ", error);
+      setMessage("error uploading file");
+    }
+  };
 
   return (
     <>
@@ -104,15 +102,24 @@ function FileUploader() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center py-5">
+      <div className="flex items-center justify-center mt-10">
+      <div className=" max-w-4xl w-auto flex flex-col items-center self-center justify-center py-10 px-5 rounded-md border-4 border-slate-500">
+        <h2 className="text-2xl text-center">
+          Losing points over Syllabus Assignments? Feeling stumped over how to
+          lock in?
+        </h2>
+        <h3 className="text-xl text-center"><b>Summarize Syllabus is here to help!</b></h3>
+      </div>
+      </div>
+      <div className="flex flex-col items-center justify-center pt-10">
         <h1 className="text-lg">
           Trust by students from <b>Top</b> Universities and Programs
         </h1>
-        </div>
-        <div className="flex overflow-hidden px-5">
+      </div>
+      <div className="flex overflow-hidden px-5">
         <ul className="flex gap-5">
           <li>
-          <img
+            <img
               loading="lazy"
               src={newUniLogos}
               alt=""
@@ -120,7 +127,7 @@ function FileUploader() {
             />
           </li>
         </ul>
-        </div>
+      </div>
     </>
   );
 }

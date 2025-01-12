@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import newUniLogos from "../assets/Uni logos (1).png";
+import {useSummaries} from "./SummariesContext";
+import { useEffect } from "react";
 import newUniLogos2 from "../assets/Uni logos (2).png";
 import "./FileUploader.css"
 import { useNavigate } from "react-router-dom";
@@ -10,7 +11,12 @@ function FileUploader() {
   const [isDragging, setIsDragging] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const { summaries, updateSummaries } = useSummaries();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("Summaries updated in context:", summaries);
+  }, [summaries]);
 
     const handleFileChange = async (event) => {
         const selectedFile = event.target.files[0];
@@ -53,7 +59,9 @@ function FileUploader() {
             });
             if (response.ok){
                 const res = await response.json();
-                navigate("/courseinfo", { state: { summaries: res } })
+                updateSummaries(res);
+                console.log("Summaries updated:", res);
+                navigate("/courseinfo")
             }
             else{
                 setMessage("Failed to upload file")

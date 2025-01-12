@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CourseInfo from "./components/CourseInfo";
+import FileUploader from "./components/FileUploader";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,9 @@ const router = createBrowserRouter([
   }, {
     path: "/courseinfo",
     element: <CourseInfo />,
+  }, {
+    path: "/upload",
+    element: <FileUploader />,
   }
 ]);
 

@@ -11,13 +11,13 @@ import json
 from pydantic import BaseModel
 
 # Importing functions for summarization
- 
+from claude import format_content, printout, summarize
 
 # Importing API keys from environment variable
 from dotenv import load_dotenv
 load_dotenv()
 aryn_api_key = os.getenv('aryn_API_KEY')
-openai_api_key = os.getenv('anthropic_API_KEY')
+anthropic_api_key = os.getenv('anthropic_API_KEY')
 
 # Initializing Flask server
 app = Flask(__name__)
@@ -39,15 +39,12 @@ def save_file():
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-
-        return jsonify({'message': 'File uploaded successfully', 'filePath': file_path}), 200
+        
+        summary = summarize(file_path, aryn_api_key, anthropic_api_key)
+        print(summary)
+        return jsonify({'message': 'File uploaded successfully', 'filePath': file_path, 'summary':summary}), 200
     else:
         return jsonify({'error': 'No file provided'}), 400
-
-
-# @app.route('/what', methods=['GET'])
-# def summarize():
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)

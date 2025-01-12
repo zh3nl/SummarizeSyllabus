@@ -2,9 +2,9 @@ import { useState } from "react";
 import newUniLogos from "../assets/Uni logos (1).png";
 
 function FileUploader() {
-    const [file, setFile] = useState(null);
-    const [isDragging, setIsDragging] = useState(false);
-    const[message, setMessage] = useState("");
+  const [file, setFile] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [message, setMessage] = useState("");
 
     const handleFileChange = async (event) => {
         const selectedFile = event.target.files[0];
@@ -57,6 +57,7 @@ function FileUploader() {
             setMessage("error uploading file")
         }
     }
+  };
 
   return (
     <>
@@ -121,15 +122,24 @@ function FileUploader() {
             )}
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center py-5">
+      <div className="flex items-center justify-center mt-10">
+      <div className=" max-w-4xl w-auto flex flex-col items-center self-center justify-center py-10 px-5 rounded-md border-4 border-slate-500">
+        <h2 className="text-2xl text-center">
+          Losing points over Syllabus Assignments? Feeling stumped over how to
+          lock in?
+        </h2>
+        <h3 className="text-xl text-center"><b>Summarize Syllabus is here to help!</b></h3>
+      </div>
+      </div>
+      <div className="flex flex-col items-center justify-center pt-10">
         <h1 className="text-lg">
           Trust by students from <b>Top</b> Universities and Programs
         </h1>
-        </div>
-        <div className="flex overflow-hidden px-5">
+      </div>
+      <div className="flex overflow-hidden px-5">
         <ul className="flex gap-5">
           <li>
-          <img
+            <img
               loading="lazy"
               src={newUniLogos}
               alt=""
@@ -137,7 +147,7 @@ function FileUploader() {
             />
           </li>
         </ul>
-        </div>
+      </div>
     </>
   );
 }

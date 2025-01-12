@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from google.oauth2.credentials import Credentials
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-
+outglobal = None
 
 def credentials_from_dict(credentials_dict):
     return Credentials(
@@ -34,7 +34,7 @@ import json
 from pydantic import BaseModel
 
 # Importing functions for summarization
-from claude import summarize
+from claude import format_content, printout, summarize
 
 # Importing API keys from environment variable
 from dotenv import load_dotenv
@@ -46,7 +46,7 @@ anthropic_api_key = os.getenv('anthropic_API_KEY')
 app = Flask(__name__)
 CORS(app)
 
-app.secret_key = os.urandom(24)
+app.secret_key = "supersecretkey"
 
 # Set the directory to save uploaded files
 UPLOAD_FOLDER = 'uploads'
@@ -97,12 +97,12 @@ def credentials_to_dict(credentials):
 def login():
     flow = Flow.from_client_secrets_file(
         CLIENT_SECRET_FILE, scopes=SCOPES, redirect_uri=REDIRECT_URI)
-    
+
     authorization_url, state = flow.authorization_url(
         access_type='offline', include_granted_scopes='true')
-    
+
     session['state'] = state  # Store the state in the session for CSRF protection
-    
+
     return redirect(authorization_url)
 
 @app.route("/dashboard")
@@ -111,56 +111,78 @@ def dashboard():
 
 @app.route('/callback')
 def callback():
-    # Get the authorization response and state from the URL
+    global outglobal
+    # 1. Check if user DID upload a file
+    # if 'out1' not in session:
+    #     return jsonify({'error': 'No processed data available'}), 400
+
+    # 2. Finish the OAuth flow
     flow = Flow.from_client_secrets_file(
-        CLIENT_SECRET_FILE, scopes=SCOPES, redirect_uri=REDIRECT_URI)
+        CLIENT_SECRET_FILE,
+        scopes=SCOPES,
+        redirect_uri=REDIRECT_URI,
+        state=session['state']  # optional but recommended to match the state
+    )
     flow.fetch_token(authorization_response=request.url)
-    
-    # Store the credentials in session
+
+    # 3. Convert credentials to dict and store in session
     credentials = flow.credentials
     session['credentials'] = credentials_to_dict(credentials)
 
     if 'credentials' not in session:
         return jsonify({'error': 'User not authenticated'}), 401
 
-        # Rebuild the Credentials object from the dict
     creds = credentials_from_dict(session['credentials'])
 
-    # Now pass the Credentials object (not the dict!) to build()
+    # 4. Build the service
     service = build('calendar', 'v3', credentials=creds)
-    
-    # Build the Google Calendar service
-    service = build('calendar', 'v3', credentials=credentials)
-    
-    # Example event data (replace with your actual event data)
-    events = json.dumps(summary[0])
-    for i in events:
 
-       service.events().insert(calendarId='primary', body=i['image_description']).execute()
-    return redirect('http://localhost:3000/courseinfo')  
+    # 5. Parse events out of session['out1']
+    out1_json_str = outglobal
+    print(outglobal)
+    events = json.loads(out1_json_str)
+    for event_obj in events:
+        image_desc_str = event_obj["image_description"]
+        # Convert single quotes to double quotes
+        image_desc_str = image_desc_str.replace("'", '"')
+        image_desc_dict = json.loads(image_desc_str)
+        if 'attendees' in image_desc_dict:
+            image_desc_dict['attendees'] = None
+        service.events().insert(
+            calendarId='primary',
+            body=image_desc_dict
+        ).execute()
+    outglobal = None
+    # 6. Redirect user to front-end or show success
+    return redirect('http://localhost:3000/courseinfo')
+
 
 # Route to render the upload form
 @app.route('/upload', methods=['POST'])
 def upload():
+    global outglobal
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
-    
+
     file = request.files['file']
     if file:
         filename = secure_filename(file.filename)
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        
+
         try:
             out1, out2, out3 = summarize(file_path, aryn_api_key, anthropic_api_key)
-            #print(summary)
+            outglobal = out1
+            session['out1'] = out1
             return jsonify({'message': 'File uploaded successfully', 'filePath': file_path, 'out1': json.loads(out1), 'out2': json.loads(out2), 'out3': json.loads(out3) }), 200
         except Exception as e:
             return jsonify({'error': 'Failed to process the file', 'details': str(e)}), 500
     else:
         return jsonify({'error': 'No file provided'}), 400
-    
+
 
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
+message.txt
+7 KB

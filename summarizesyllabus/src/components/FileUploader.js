@@ -72,7 +72,7 @@ function FileUploader() {
             setLoading(false);
         }
     }
-  };
+  
 
   return (
     <>

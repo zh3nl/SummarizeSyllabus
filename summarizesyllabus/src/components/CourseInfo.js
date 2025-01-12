@@ -7,7 +7,7 @@ function CourseInfo() {
   const location = useLocation();
   const courseInfo = location.state.summaries;
   const navigate = useNavigate();
-
+  
   return (
     <div className="container">
       <h1 className="header">Everything You Need To Know About Your Course</h1>

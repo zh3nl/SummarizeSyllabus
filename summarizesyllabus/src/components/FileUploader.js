@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import newUniLogos2 from "../assets/Uni logos (2).png";
-import "./FileUploader.css"
+import "./FileUploader.css";
 import { useNavigate } from "react-router-dom";
 
 function FileUploader() {
@@ -11,13 +11,13 @@ function FileUploader() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-    const handleFileChange = async (event) => {
-        const selectedFile = event.target.files[0];
-        if (selectedFile) {
-            setFile(selectedFile);
-            setMessage("");
-        }
-    };
+  const handleFileChange = async (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setMessage("");
+    }
+  };
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -28,52 +28,50 @@ function FileUploader() {
     setIsDragging(false);
   };
 
-    const handleDrop = async (event) => {
-        event.preventDefault();
-        setIsDragging(false);
-        
-        const droppedFile = event.dataTransfer.files[0];
-        if (droppedFile) {
-            setFile(droppedFile);
-            setMessage("");
-        }
-    };
+  const handleDrop = async (event) => {
+    event.preventDefault();
+    setIsDragging(false);
 
-    const uploadFile = async (file) => {
-
-        const formData = new FormData();
-        formData.append("file", file);
-
-        try{        
-            setLoading(true);
-            const response = await fetch("http://localhost:8000/upload", {
-                method: "POST",
-                body: formData,
-            });
-            if (response.ok){
-                const res = await response.json();
-                navigate("/courseinfo", { state: { summaries: res } })
-            }
-            else{
-                setMessage("Failed to upload file")
-            }
-        } catch (error){
-            console.error("error uploading file: ", error);
-            setMessage("error uploading file")
-        } finally{
-            setLoading(false);
-        }
+    const droppedFile = event.dataTransfer.files[0];
+    if (droppedFile) {
+      setFile(droppedFile);
+      setMessage("");
     }
+  };
+
+  const uploadFile = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      setLoading(true);
+      const response = await fetch("http://localhost:8000/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (response.ok) {
+        const res = await response.json();
+        navigate("/courseinfo", { state: { summaries: res } });
+      } else {
+        setMessage("Failed to upload file");
+      }
+    } catch (error) {
+      console.error("error uploading file: ", error);
+      setMessage("error uploading file");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
-      <div>
-        <section className='main-container'>
-          <div className='main-intro'>Scan. Simplify. <span id='succeed'>Succeed.</span></div>
-        </section>
-      </div>
       <div className="flex items-center justify-center">
         <div className="flex flex-col items-center space-y-6">
+          <section className="main-container">
+            <div className="main-intro">
+              Scan. Simplify. <span id="succeed">Succeed.</span>
+            </div>
+          </section>
           <h1 className="text-2xl font-semibold text-gray-800">
             Upload Your Syllabus Below
           </h1>
@@ -115,27 +113,28 @@ function FileUploader() {
               )}
             </div>
           </div>
-          <button 
-            onClick={() => uploadFile(file)} 
-            className="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition duration-200">
+          <button
+            onClick={() => uploadFile(file)}
+            className="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition duration-200"
+          >
             Upload File
-            </button>
-            {loading && (
-              <p className="mt-4 text-sm font-medium text-blue-600">
-                Scanning file... May take a moment...
-              </p>
-            )}
-            {message && (
-                        <p
-                            className={`mt-4 text-sm font-medium ${
-                                message.includes("successfully")
-                                    ? "text-green-600"
-                                    : "text-red-600"
-                            }`}
-                        >
-                            {message}
-                        </p>
-            )}
+          </button>
+          {loading && (
+            <p className="mt-4 text-sm font-medium text-blue-600">
+              Scanning file... May take a moment...
+            </p>
+          )}
+          {message && (
+            <p
+              className={`mt-4 text-sm font-medium ${
+                message.includes("successfully")
+                  ? "text-green-600"
+                  : "text-red-600"
+              }`}
+            >
+              {message}
+            </p>
+          )}
         </div>
       </div>
       <div className="flex items-center justify-center mt-10">
@@ -168,6 +167,6 @@ function FileUploader() {
       </div>
     </>
   );
- }
+}
 
 export default FileUploader;

@@ -1,4 +1,6 @@
-import { useState } from "react"; 
+import { useState } from "react";
+import uniLogos from "../assets/Uni logos.png";
+import newUniLogos from "../assets/Uni logos (1).png";
 
 function FileUploader() {
     const [file, setFile] = useState(null);
@@ -13,14 +15,14 @@ function FileUploader() {
         }
     };
 
-    const handleDragOver = (event) => {
-        event.preventDefault();
-        setIsDragging(true);
-    };
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
 
-    const handleDragLeave = () => {
-        setIsDragging(false);
-    };
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
 
     const handleDrop = async (event) => {
         event.preventDefault();
@@ -55,47 +57,72 @@ function FileUploader() {
         }
     }
 
-    return (
-        <div className="flex items-center justify-center">
-            <div className="flex flex-col items-center space-y-6">
-                <h1 className="text-2xl font-semibold text-gray-800">Upload Your Syllabus Below</h1>
-                <div
-                    className={`w-full max-w-md p-6 border-2 border-dashed rounded-lg cursor-pointer
-                        ${isDragging ? 'border-blue-500 bg-blue-50' : 'bg-gray-100 border-gray-300'}
-                        ${file ? 'bg-green-50' : 'bg-gray-50'}
+  return (
+    <>
+      <div className="flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-6">
+          <h1 className="text-2xl font-semibold text-gray-800">
+            Upload Your Syllabus Below
+          </h1>
+          <div
+            className={`w-full max-w-md p-6 border-2 border-dashed rounded-lg cursor-pointer
+                        ${
+                          isDragging
+                            ? "border-blue-500 bg-blue-50"
+                            : "border-gray-300"
+                        }
+                        ${file ? "bg-green-50" : "bg-gray-50"}
                         transition-all duration-200 ease-in-out`}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                    onClick={() => document.querySelector('input[type="file"]').click()}
-                >
-                    <input
-                        type="file"
-                        onChange={handleFileChange}
-                        className="hidden"
-                        accept=".pdf,.doc,.docx,.txt"
-                    />
-                    <div className="text-center">
-                        {file ? (
-                            <>
-                                <p className="text-sm text-gray-700">Selected file:</p>
-                                <p className="font-medium">{file.name}</p>
-                            </>
-                        ) : (
-                            <>
-                                <p className="text-lg font-medium text-gray-600">
-                                    Drop your file here or click to browse
-                                </p>
-                                <p className="mt-2 text-sm text-gray-500">
-                                    Supported formats: PDF, DOC, DOCX, TXT
-                                </p>
-                            </>
-                        )}
-                    </div>
-                </div>
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            onClick={() => document.querySelector('input[type="file"]').click()}
+          >
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="hidden"
+              accept=".pdf,.doc,.docx,.txt"
+            />
+            <div className="text-center">
+              {file ? (
+                <>
+                  <p className="text-sm text-gray-600">Selected file:</p>
+                  <p className="font-medium">{file.name}</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-lg font-medium text-gray-700">
+                    Drop your file here or click to browse
+                  </p>
+                  <p className="mt-2 text-sm text-gray-500">
+                    Supported formats: PDF, DOC, DOCX, TXT
+                  </p>
+                </>
+              )}
             </div>
+          </div>
         </div>
-    );
+      </div>
+      <div className="flex flex-col items-center justify-center py-5">
+        <h1 className="text-lg">
+          Trust by students from <b>Top</b> Universities and Programs
+        </h1>
+        </div>
+        <div className="flex overflow-hidden px-5">
+        <ul className="flex gap-5">
+          <li>
+          <img
+              loading="lazy"
+              src={newUniLogos}
+              alt=""
+              className="h-25 w-auto object-contain object-center self-center shrink-0 max-w-full m-0"
+            />
+          </li>
+        </ul>
+        </div>
+    </>
+  );
 }
 
 export default FileUploader;

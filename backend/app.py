@@ -47,9 +47,12 @@ def upload():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
         
-        summary = summarize(file_path, aryn_api_key, anthropic_api_key)
-        print(summary)
-        return jsonify({'message': 'File uploaded successfully', 'filePath': file_path, 'summary':summary}), 200
+        try:
+            out1, out2, out3 = summarize(file_path, aryn_api_key, anthropic_api_key)
+            #print(summary)
+            return jsonify({'message': 'File uploaded successfully', 'filePath': file_path, 'out1': json.loads(out1), 'out2': json.loads(out2), 'out3': json.loads(out3)}), 200
+        except Exception as e:
+            return jsonify({'error': 'Failed to process the file', 'details': str(e)}), 500
     else:
         return jsonify({'error': 'No file provided'}), 400
     

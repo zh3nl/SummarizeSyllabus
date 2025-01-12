@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import newUniLogos from "../assets/Uni logos (1).png";
+import newUniLogos2 from "../assets/Uni logos (2).png";
 import "./FileUploader.css"
 import { useNavigate } from "react-router-dom";
 
@@ -159,9 +160,9 @@ function FileUploader() {
           <li>
             <img
               loading="lazy"
-              src={newUniLogos}
+              src={newUniLogos2}
               alt=""
-              className="h-25 w-auto object-contain object-center self-center shrink-0 max-w-full m-0"
+              className="h-25 w-auto object-contain object-center justify-center self-center shrink-0 max-w-full ml-10"
             />
           </li>
         </ul>

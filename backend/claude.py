@@ -50,7 +50,7 @@ def summarize(file_name, aryn_api_key, anthropic_api_key):
     formatted_content = format_content(data)
 
     client = anthropic.Anthropic(api_key=anthropic_api_key)
-    message = client.messages.create(
+    message1 = client.messages.create(
         model="claude-3-5-sonnet-20241022",
         max_tokens=1024,
         messages=[
@@ -115,5 +115,50 @@ def summarize(file_name, aryn_api_key, anthropic_api_key):
             tool_choice={"type": "tool", "name": "build_description_result"}
 
     )
-    out = json.dumps(message.content[0].input['steps'], indent=4)
-    return out
+    out1 = json.dumps(message1.content[0].input['steps'], indent=4)
+
+    message2 = client.messages.create(
+        model="claude-3-5-sonnet-20241022",
+        max_tokens=8192,
+        temperature=0,
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "The following is a PDF syllabus document converted using aryn docparse. Please give a summary of all of the important information"
+                                f"{formatted_content}\n\n"
+                    }
+                ],
+            }
+        ],
+        tools=tools,
+        tool_choice={"type": "tool", "name": "build_description_result"}
+
+    )
+    out2 = json.dumps(message2.content[0].input['steps'], indent=4)
+
+    message3 = client.messages.create(
+        model="claude-3-5-sonnet-20241022",
+        max_tokens=8192,
+        temperature=0.2,
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "The following is a PDF syllabus document converted using aryn docparse. Please ingest the information of the course, and only return likely or defined prerequisites to ensure the student is prepared for the content of the class with likely prerequisites returned in a list and having external linkes to resources if necessary."
+                                f"{formatted_content}\n\n"
+                    }
+                ],
+            }
+        ],
+        tools=tools,
+        tool_choice={"type": "tool", "name": "build_description_result"}
+
+    )
+    out3 = json.dumps(message3.content[0].input['steps'], indent=4)
+
+    return out1, out2, out3

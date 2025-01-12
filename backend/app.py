@@ -34,7 +34,7 @@ import json
 from pydantic import BaseModel
 
 # Importing functions for summarization
-from claude import format_content, printout, summarize
+from claude import summarize
 
 # Importing API keys from environment variable
 from dotenv import load_dotenv
@@ -133,7 +133,7 @@ def callback():
     service = build('calendar', 'v3', credentials=credentials)
     
     # Example event data (replace with your actual event data)
-    events = (summary)
+    events = json.dumps(summary[0])
     for i in events:
 
        service.events().insert(calendarId='primary', body=i['image_description']).execute()

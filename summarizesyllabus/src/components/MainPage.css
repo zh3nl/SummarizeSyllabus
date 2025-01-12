@@ -1,0 +1,37 @@
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center;
+    text-align: center;
+    padding-top: 200px; 
+    box-sizing: border-box;
+}
+
+.main-intro {
+
+    display: flex;
+    text-align: center;
+    font-size: 56px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-left: 85px;
+}
+
+#succeed{
+    padding-left: 16px;
+    background: linear-gradient(90deg, #ffcc00, #003da5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+   
+}
+
+.main-instructions {
+    font-size: 18px;
+}

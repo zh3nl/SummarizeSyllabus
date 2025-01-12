@@ -11,6 +11,8 @@ CLIENT_SECRET_FILE = 'backend/client_secret.json'
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 REDIRECT_URI = 'http://localhost:8000/callback'
 
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
 # Importing necessary packages for Aryn DocParse and Claude
 import anthropic
 from aryn_sdk.partition import partition_file

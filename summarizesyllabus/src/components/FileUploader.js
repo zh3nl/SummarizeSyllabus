@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import newUniLogos from "../assets/Uni logos (1).png";
 import "./FileUploader.css"

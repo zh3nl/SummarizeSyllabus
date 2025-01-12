@@ -6,6 +6,8 @@ function CourseInfo() {
     const courseInfo = location.state.summaries; 
     return (
         <div>
+        <div className="flex justify-center items-center py-10">
+        <div className="max-w-4xl" style={{borderRadius: 7, border: "4px solid black",backgroundColor: "#fdf5e6"}}>
         <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
             <h1>Course Information</h1>
             {courseInfo.out2.map((item, index) => (
@@ -25,6 +27,8 @@ function CourseInfo() {
                     <p style={{ color: "#34495e", lineHeight: "1.6" }}>{item.image_description}</p>
                 </div>
             ))}
+        </div>
+        </div>
         </div>
         </div>
     )

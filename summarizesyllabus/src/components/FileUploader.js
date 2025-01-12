@@ -93,7 +93,7 @@ function FileUploader() {
                             ? "border-blue-500 bg-blue-50"
                             : "border-gray-300"
                         }
-                        ${file ? "bg-green-50" : "bg-gray-50"}
+                        ${file ? "bg-blue-100" : "bg-gray-50"}
                         transition-all duration-200 ease-in-out`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -151,11 +151,10 @@ function FileUploader() {
       <div className="flex items-center justify-center mt-10">
         <div className=" max-w-4xl w-auto flex flex-col items-center self-center justify-center py-10 px-5 rounded-md border-4 border-slate-500">
           <h2 className="text-2xl text-center">
-            Losing points over Syllabus Assignments? Feeling stumped over how to
-            lock in?
+            Looking to 10x your academic productivity? Syllabus Scanner is here to help!
           </h2>
-          <h3 className="text-xl text-center">
-            <b>Summarize Syllabus is here to help!</b>
+          <h3 className="text-xl text-center pt-3">
+            <b>Streamline your academic journey with Syllabus Scanner, which generate syllabus summaries, automate class calendars, and store essential course information!</b>
           </h3>
         </div>
       </div>

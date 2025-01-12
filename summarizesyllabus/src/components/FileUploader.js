@@ -1,11 +1,14 @@
 import { useState } from "react";
 import newUniLogos from "../assets/Uni logos (1).png";
+import "./FileUploader.css"
+//import { useNavigate } from "react-router-dom";
 
 function FileUploader() {
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  //const navigate = useNavigate();
 
     const handleFileChange = async (event) => {
         const selectedFile = event.target.files[0];
@@ -48,8 +51,7 @@ function FileUploader() {
             });
             if (response.ok){
                 const res = await response.json();
-                setMessage(`File uploaded successfully`)
-                setFile(null);
+                //navigate("/summary", { state: { summaries: res } })
             }
             else{
                 setMessage("Failed to upload file")
@@ -64,6 +66,11 @@ function FileUploader() {
 
   return (
     <>
+      <div>
+        <section className='main-container'>
+          <div className='main-intro'>Scan. Simplify. <span id='succeed'>Succeed.</span></div>
+        </section>
+      </div>
       <div className="flex items-center justify-center">
         <div className="flex flex-col items-center space-y-6">
           <h1 className="text-2xl font-semibold text-gray-800">

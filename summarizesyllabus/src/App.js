@@ -1,11 +1,10 @@
 import './App.css';
 import FileUploader from './components/FileUploader';
-import MainPage from './components/MainPage';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 
 function App() {
   return (
     <div>
-      <MainPage />
       <FileUploader />
     </div>
   );

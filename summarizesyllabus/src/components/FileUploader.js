@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import newUniLogos from "../assets/Uni logos (1).png";
+import { useNavigate } from "react-router";
 
 function FileUploader() {
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
     const handleFileChange = async (event) => {
         const selectedFile = event.target.files[0];
@@ -50,6 +52,7 @@ function FileUploader() {
                 const res = await response.json();
                 setMessage(`File uploaded successfully`)
                 setFile(null);
+                navigate("/courseinfo", {state: {res}})
             }
             else{
                 setMessage("Failed to upload file")

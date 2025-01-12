@@ -1,6 +1,5 @@
 requests
 python-dotenv
-pdf2image==1.17.0
 aryn-sdk
 openai
 pydantic
@@ -9,3 +8,6 @@ google-auth
 google-auth-oauthlib
 google-auth-httplib2
 google-api-python-client
+flask
+werkzeug
+flask_cors

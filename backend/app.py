@@ -3,11 +3,25 @@ from flask import Flask, request, jsonify, redirect, session, url_for
 from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
+from google.oauth2.credentials import Credentials
+
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
+
+def credentials_from_dict(credentials_dict):
+    return Credentials(
+        token=credentials_dict['token'],
+        refresh_token=credentials_dict['refresh_token'],
+        token_uri=credentials_dict['token_uri'],
+        client_id=credentials_dict['client_id'],
+        client_secret=credentials_dict['client_secret'],
+        scopes=credentials_dict['scopes']
+    )
 
 # Importing necessary packages for Google OAuth
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
-CLIENT_SECRET_FILE = 'backend/client_secret.json'
+CLIENT_SECRET_FILE = 'client_secret.json'
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 REDIRECT_URI = 'http://localhost:8000/callback'
 
@@ -41,8 +55,32 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 summary = [
     {
         "image_title": "Lectures",
-        "image_description": "{\n      'summary': 'CS 122A/EECS 116 Lecture',\n      'location': 'HSLH 100A',\n      'description': 'Introduction to Data Management lecture',\n      'start': {\n        'dateTime': '2025-01-07T11:00:00-08:00',\n        'timeZone': 'America/Los_Angeles'\n      },\n      'end': {\n        'dateTime': '2025-01-07T12:20:00-08:00',\n        'timeZone': 'America/Los_Angeles'\n      },\n      'recurrence': [\n        'RRULE:FREQ=WEEKLY;BYDAY=TU,TH;UNTIL=20250321T235959Z'\n      ],\n      'attendees': [],\n      'reminders': {\n        'useDefault': false,\n        'overrides': [\n          {'method': 'email', 'minutes': 1440},\n          {'method': 'popup', 'minutes': 10}\n        ]\n      }\n    }"
-    }]
+        "image_description": {
+            "summary": "CS 122A/EECS 116 Lecture",
+            "location": "HSLH 100A",
+            "description": "Introduction to Data Management lecture",
+            "start": {
+                "dateTime": "2025-01-07T11:00:00-08:00",
+                "timeZone": "America/Los_Angeles"
+            },
+            "end": {
+                "dateTime": "2025-01-07T12:20:00-08:00",
+                "timeZone": "America/Los_Angeles"
+            },
+            "recurrence": [
+                "RRULE:FREQ=WEEKLY;BYDAY=TU,TH;UNTIL=20250321T235959Z"
+            ],
+            "attendees": [],
+            "reminders": {
+                "useDefault": False,
+                "overrides": [
+                    {"method": "email", "minutes": 1440},
+                    {"method": "popup", "minutes": 10}
+                ]
+            }
+        }
+    }
+]
 
 def credentials_to_dict(credentials):
     """Converts credentials to a dictionary."""
@@ -67,6 +105,10 @@ def login():
     
     return redirect(authorization_url)
 
+@app.route("/dashboard")
+def dashboard():
+    return "This is the dashboard."
+
 @app.route('/callback')
 def callback():
     # Get the authorization response and state from the URL
@@ -80,17 +122,21 @@ def callback():
 
     if 'credentials' not in session:
         return jsonify({'error': 'User not authenticated'}), 401
-    
-    # Retrieve credentials from the session
-    credentials = session['credentials']
+
+        # Rebuild the Credentials object from the dict
+    creds = credentials_from_dict(session['credentials'])
+
+    # Now pass the Credentials object (not the dict!) to build()
+    service = build('calendar', 'v3', credentials=creds)
     
     # Build the Google Calendar service
     service = build('calendar', 'v3', credentials=credentials)
     
     # Example event data (replace with your actual event data)
-    for i in summary[0]:
-       
-       event = service.events().insert(calendarId='primary', body=i['image_description']).execute() 
+    events = (summary)
+    for i in events:
+
+       service.events().insert(calendarId='primary', body=i['image_description']).execute()
     return redirect(url_for('dashboard'))  # Redirect back to the dashboard page
 
 # Route to render the upload form

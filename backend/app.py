@@ -152,9 +152,9 @@ def upload():
         file.save(file_path)
         
         try:
-            summary = summarize(file_path, aryn_api_key, anthropic_api_key)
+            out1, out2, out3 = summarize(file_path, aryn_api_key, anthropic_api_key)
             #print(summary)
-            return jsonify({'message': 'File uploaded successfully', 'filePath': file_path, 'summary':summary }), 200
+            return jsonify({'message': 'File uploaded successfully', 'filePath': file_path, 'out1': json.loads(out1), 'out2': json.loads(out2), 'out3': json.loads(out3) }), 200
         except Exception as e:
             return jsonify({'error': 'Failed to process the file', 'details': str(e)}), 500
     else:

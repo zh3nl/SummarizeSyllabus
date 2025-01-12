@@ -103,13 +103,15 @@ function FileUploader() {
         </div>
       </div>
       <div className="flex items-center justify-center mt-10">
-      <div className=" max-w-4xl w-auto flex flex-col items-center self-center justify-center py-10 px-5 rounded-md border-4 border-slate-500">
-        <h2 className="text-2xl text-center">
-          Losing points over Syllabus Assignments? Feeling stumped over how to
-          lock in?
-        </h2>
-        <h3 className="text-xl text-center"><b>Summarize Syllabus is here to help!</b></h3>
-      </div>
+        <div className=" max-w-4xl w-auto flex flex-col items-center self-center justify-center py-10 px-5 rounded-md border-4 border-slate-500">
+          <h2 className="text-2xl text-center">
+            Losing points over Syllabus Assignments? Feeling stumped over how to
+            lock in?
+          </h2>
+          <h3 className="text-xl text-center">
+            <b>Summarize Syllabus is here to help!</b>
+          </h3>
+        </div>
       </div>
       <div className="flex flex-col items-center justify-center pt-10">
         <h1 className="text-lg">

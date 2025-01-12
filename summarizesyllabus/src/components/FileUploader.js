@@ -5,14 +5,15 @@ function FileUploader() {
   const [file, setFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleFileChange = async (event) => {
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      await uploadFile(selectedFile);
-    }
-  };
+    const handleFileChange = async (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+            setMessage("");
+        }
+    };
 
   const handleDragOver = (event) => {
     event.preventDefault();
@@ -23,37 +24,43 @@ function FileUploader() {
     setIsDragging(false);
   };
 
-  const handleDrop = async (event) => {
-    event.preventDefault();
-    setIsDragging(false);
+    const handleDrop = async (event) => {
+        event.preventDefault();
+        setIsDragging(false);
+        
+        const droppedFile = event.dataTransfer.files[0];
+        if (droppedFile) {
+            setFile(droppedFile);
+            setMessage("");
+        }
+    };
 
-    const droppedFile = event.dataTransfer.files[0];
-    if (droppedFile) {
-      setFile(droppedFile);
-      await uploadFile(droppedFile);
+    const uploadFile = async (file) => {
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try{        
+            setLoading(true);
+            const response = await fetch("http://localhost:8000/upload", {
+                method: "POST",
+                body: formData,
+            });
+            if (response.ok){
+                const res = await response.json();
+                setMessage(`File uploaded successfully`)
+                setFile(null);
+            }
+            else{
+                setMessage("Failed to upload file")
+            }
+        } catch (error){
+            console.error("error uploading file: ", error);
+            setMessage("error uploading file")
+        } finally{
+            setLoading(false);
+        }
     }
-  };
-
-  const uploadFile = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await fetch("http://localhost:8000/upload", {
-        method: "POST",
-        body: formData,
-      });
-      if (response.ok) {
-        const res = await response.json();
-        setMessage(`File uploaded successfully, path = ${res.filePath}`);
-      } else {
-        setMessage("Failed to upload file");
-      }
-    } catch (error) {
-      console.error("error uploading file: ", error);
-      setMessage("error uploading file");
-    }
-  };
 
   return (
     <>
@@ -100,16 +107,39 @@ function FileUploader() {
               )}
             </div>
           </div>
+          <button 
+            onClick={() => uploadFile(file)} 
+            className="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition duration-200">
+            Upload File
+            </button>
+            {loading && (
+              <p className="mt-4 text-sm font-medium text-blue-600">
+                Uploading file...
+              </p>
+            )}
+            {message && (
+                        <p
+                            className={`mt-4 text-sm font-medium ${
+                                message.includes("successfully")
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                            }`}
+                        >
+                            {message}
+                        </p>
+            )}
         </div>
       </div>
       <div className="flex items-center justify-center mt-10">
-      <div className=" max-w-4xl w-auto flex flex-col items-center self-center justify-center py-10 px-5 rounded-md border-4 border-slate-500">
-        <h2 className="text-2xl text-center">
-          Losing points over Syllabus Assignments? Feeling stumped over how to
-          lock in?
-        </h2>
-        <h3 className="text-xl text-center"><b>Summarize Syllabus is here to help!</b></h3>
-      </div>
+        <div className=" max-w-4xl w-auto flex flex-col items-center self-center justify-center py-10 px-5 rounded-md border-4 border-slate-500">
+          <h2 className="text-2xl text-center">
+            Losing points over Syllabus Assignments? Feeling stumped over how to
+            lock in?
+          </h2>
+          <h3 className="text-xl text-center">
+            <b>Summarize Syllabus is here to help!</b>
+          </h3>
+        </div>
       </div>
       <div className="flex flex-col items-center justify-center pt-10">
         <h1 className="text-lg">
@@ -130,6 +160,6 @@ function FileUploader() {
       </div>
     </>
   );
-}
+ }
 
 export default FileUploader;

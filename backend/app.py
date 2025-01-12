@@ -4,6 +4,7 @@ from flask_cors import CORS
 import os
 from werkzeug.utils import secure_filename
 from google.oauth2.credentials import Credentials
+import json
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -25,13 +26,7 @@ CLIENT_SECRET_FILE = 'client_secret.json'
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 REDIRECT_URI = 'http://localhost:8000/callback'
 
-# Importing necessary packages for Aryn DocParse and Claude
-import anthropic
-from aryn_sdk.partition import partition_file
-import json
-from pydantic import BaseModel
 
-# Importing functions for summarization
 from claude import format_content, printout, summarize
 
 # Importing API keys from environment variable
@@ -50,35 +45,7 @@ app.secret_key = os.urandom(24)
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-summary = [
-    {
-        "image_title": "Lectures",
-        "image_description": {
-            "summary": "CS 122A/EECS 116 Lecture",
-            "location": "HSLH 100A",
-            "description": "Introduction to Data Management lecture",
-            "start": {
-                "dateTime": "2025-01-07T11:00:00-08:00",
-                "timeZone": "America/Los_Angeles"
-            },
-            "end": {
-                "dateTime": "2025-01-07T12:20:00-08:00",
-                "timeZone": "America/Los_Angeles"
-            },
-            "recurrence": [
-                "RRULE:FREQ=WEEKLY;BYDAY=TU,TH;UNTIL=20250321T235959Z"
-            ],
-            "attendees": [],
-            "reminders": {
-                "useDefault": False,
-                "overrides": [
-                    {"method": "email", "minutes": 1440},
-                    {"method": "popup", "minutes": 10}
-                ]
-            }
-        }
-    }
-]
+summary = ()
 
 def credentials_to_dict(credentials):
     """Converts credentials to a dictionary."""
@@ -126,12 +93,12 @@ def callback():
 
     # Now pass the Credentials object (not the dict!) to build()
     service = build('calendar', 'v3', credentials=creds)
-    
+
     # Build the Google Calendar service
     service = build('calendar', 'v3', credentials=credentials)
     
     # Example event data (replace with your actual event data)
-    events = (summary)
+    events = json.dumps(summary[0])
     for i in events:
 
        service.events().insert(calendarId='primary', body=i['image_description']).execute()
@@ -151,7 +118,6 @@ def upload():
         
         try:
             summary = summarize(file_path, aryn_api_key, anthropic_api_key)
-            #print(summary)
             return jsonify({'message': 'File uploaded successfully', 'filePath': file_path, 'summary':summary }), 200
         except Exception as e:
             return jsonify({'error': 'Failed to process the file', 'details': str(e)}), 500

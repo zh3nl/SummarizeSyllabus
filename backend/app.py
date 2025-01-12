@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 # Importing necessary packages for Google OAuth
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
-CLIENT_SECRET_FILE = 'client_secret.json'
+CLIENT_SECRET_FILE = 'backend/client_secret.json'
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
 REDIRECT_URI = 'http://localhost:8000/callback'
 
@@ -30,11 +30,17 @@ anthropic_api_key = os.getenv('anthropic_API_KEY')
 app = Flask(__name__)
 CORS(app)
 
+app.secret_key = os.urandom(24)
+
 # Set the directory to save uploaded files
-UPLOAD_FOLDER = 'backend/uploads'
+UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-summary = ()
+summary = [
+    {
+        "image_title": "Lectures",
+        "image_description": "{\n      'summary': 'CS 122A/EECS 116 Lecture',\n      'location': 'HSLH 100A',\n      'description': 'Introduction to Data Management lecture',\n      'start': {\n        'dateTime': '2025-01-07T11:00:00-08:00',\n        'timeZone': 'America/Los_Angeles'\n      },\n      'end': {\n        'dateTime': '2025-01-07T12:20:00-08:00',\n        'timeZone': 'America/Los_Angeles'\n      },\n      'recurrence': [\n        'RRULE:FREQ=WEEKLY;BYDAY=TU,TH;UNTIL=20250321T235959Z'\n      ],\n      'attendees': [],\n      'reminders': {\n        'useDefault': false,\n        'overrides': [\n          {'method': 'email', 'minutes': 1440},\n          {'method': 'popup', 'minutes': 10}\n        ]\n      }\n    }"
+    }]
 
 def credentials_to_dict(credentials):
     """Converts credentials to a dictionary."""
@@ -85,40 +91,6 @@ def callback():
        event = service.events().insert(calendarId='primary', body=i['image_description']).execute() 
     return redirect(url_for('dashboard'))  # Redirect back to the dashboard page
 
-@app.route('/add_event', methods=['POST'])
-def add_event():
-    # Check if credentials exist
-    if 'credentials' not in session:
-        return jsonify({'error': 'User not authenticated'}), 401
-    
-    # Retrieve credentials from the session
-    credentials = session['credentials']
-    
-    # Build the Google Calendar service
-    service = build('calendar', 'v3', credentials=credentials)
-    
-    # Example event data (replace with your actual event data)
-    event = {
-        'summary': 'Google I/O 2025',
-        'location': 'Mountain View, CA',
-        'description': 'Annual developer conference.',
-        'start': {
-            'dateTime': '2025-05-28T09:00:00-07:00',
-            'timeZone': 'America/Los_Angeles',
-        },
-        'end': {
-            'dateTime': '2025-05-28T17:00:00-07:00',
-            'timeZone': 'America/Los_Angeles',
-        },
-    }
-    
-    # Insert the event into the Google Calendar
-    event = service.events().insert(calendarId='primary', body=event).execute()
-    
-    return jsonify({'message': 'Event added successfully!', 'event': event}), 200
-
-
-
 # Route to render the upload form
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -132,9 +104,9 @@ def upload():
         file.save(file_path)
         
         try:
-            out1, out2, out3 = summarize(file_path, aryn_api_key, anthropic_api_key)
+            summary = summarize(file_path, aryn_api_key, anthropic_api_key)
             #print(summary)
-            return jsonify({'message': 'File uploaded successfully', 'filePath': file_path, 'out1': json.loads(out1), 'out2': json.loads(out2), 'out3': json.loads(out3)}), 200
+            return jsonify({'message': 'File uploaded successfully', 'filePath': file_path, 'summary':summary }), 200
         except Exception as e:
             return jsonify({'error': 'Failed to process the file', 'details': str(e)}), 500
     else:

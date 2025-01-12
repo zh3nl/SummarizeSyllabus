@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google OAuth Test</title>
+    <script>
+        function loginWithGoogle() {
+            // Redirect user to the /login route of Flask, initiating the OAuth flow
+            window.location.href = 'http://localhost:8000/login';
+        }
+
+        function addEvent() {
+            // Trigger the backend to add an event to Google Calendar via the /add_event route
+            fetch('http://localhost:8000/add_event', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    event_title: 'Sample Event',
+                    start_time: '2025-05-28T09:00:00-07:00',
+                    end_time: '2025-05-28T17:00:00-07:00'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert('Event added successfully: ' + data.message);
+                } else {
+                    alert('Error adding event: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to add event');
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Google OAuth and Calendar Event Test</h1>
+
+    <button onclick="loginWithGoogle()">Login with Google</button>
+    <br><br>
+    <button onclick="addEvent()">Add Event to Calendar</button>
+</body>
+</html>

@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import {useSummaries} from "./SummariesContext";
+import { useEffect } from "react";
 import newUniLogos2 from "../assets/Uni logos (2).png";
 import "./FileUploader.css";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +11,12 @@ function FileUploader() {
   const [isDragging, setIsDragging] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const { summaries, updateSummaries } = useSummaries();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("Summaries updated in context:", summaries);
+  }, [summaries]);
 
   const handleFileChange = async (event) => {
     const selectedFile = event.target.files[0];
@@ -43,23 +50,27 @@ function FileUploader() {
     const formData = new FormData();
     formData.append("file", file);
 
-    try {
-      setLoading(true);
-      const response = await fetch("http://localhost:8000/upload", {
-        method: "POST",
-        body: formData,
-      });
-      if (response.ok) {
-        const res = await response.json();
-        navigate("/courseinfo", { state: { summaries: res } });
-      } else {
-        setMessage("Failed to upload file");
-      }
-    } catch (error) {
-      console.error("error uploading file: ", error);
-      setMessage("error uploading file");
-    } finally {
-      setLoading(false);
+        try{        
+            setLoading(true);
+            const response = await fetch("http://localhost:8000/upload", {
+                method: "POST",
+                body: formData,
+            });
+            if (response.ok){
+                const res = await response.json();
+                updateSummaries(res);
+                console.log("Summaries updated:", res);
+                navigate("/courseinfo")
+            }
+            else{
+                setMessage("Failed to upload file")
+            }
+        } catch (error){
+            console.error("error uploading file: ", error);
+            setMessage("error uploading file")
+        } finally{
+            setLoading(false);
+        }
     }
   };
 

@@ -137,7 +137,7 @@ def callback():
     for i in events:
 
        service.events().insert(calendarId='primary', body=i['image_description']).execute()
-    return redirect(url_for('dashboard'))  # Redirect back to the dashboard page
+    return redirect('http://localhost:3000/courseinfo')  
 
 # Route to render the upload form
 @app.route('/upload', methods=['POST'])

@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CourseInfo from "./components/CourseInfo";
 import FileUploader from "./components/FileUploader";
+import { SummariesProvider} from "./components/SummariesContext";
 
 const router = createBrowserRouter([
   {
@@ -22,9 +23,9 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+    <SummariesProvider>
+      <RouterProvider router={router} />
+    </SummariesProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

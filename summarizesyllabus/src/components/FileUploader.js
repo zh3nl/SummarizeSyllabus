@@ -57,7 +57,6 @@ function FileUploader() {
             setMessage("error uploading file")
         }
     }
-  };
 
   return (
     <>
@@ -150,6 +149,6 @@ function FileUploader() {
       </div>
     </>
   );
-}
+ }
 
 export default FileUploader;

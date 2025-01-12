@@ -2,5 +2,9 @@
   "devDependencies": {
     "tailwindcss": "^3.4.17",
     "web-vitals": "^4.2.4"
+  },
+  "dependencies": {
+    "react-router": "^7.1.1",
+    "react-router-dom": "^7.1.1"
   }
 }

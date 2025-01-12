@@ -1,0 +1,83 @@
+/* Main container */
+.container {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Space between sections */
+  }
+  
+  /* Header */
+  .header {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+    margin-left: 45px;
+  }
+  
+  /* Section Grid */
+  .section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    margin-left: 45px;
+    gap: 20px; /* Space between columns and rows */
+    width: 100%;
+  }
+  
+  /* Section container */
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between heading and content */
+    background-color: lightgray;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Subheading */
+  .subheading {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+  }
+  
+  /* Paragraphs */
+  .paragraph {
+    font-size: 16px;
+    color: #34495e;
+    line-height: 1.8;
+    margin: 0;
+    white-space: pre-wrap;
+  }
+  
+  /* Button */
+  .button {
+    margin-left: 80px;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #2980b9;
+    transform: scale(1.05);
+  }
+  
+  .button:active {
+    background-color: #1e6f9f;
+  }
+  
